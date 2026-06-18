@@ -1,0 +1,14 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.user
+
+# SQL local
+*.bak
+*.ldf
+*.mdf

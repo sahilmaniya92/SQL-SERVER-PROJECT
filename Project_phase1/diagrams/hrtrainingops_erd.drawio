@@ -1,0 +1,214 @@
+<mxfile host="app.diagrams.net" agent="HRTrainingOps" version="24.7.17">
+  <diagram id="HRTrainingOps-ERD-v2" name="HRTrainingOps ERD">
+    <mxGraphModel dx="1800" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="1450" background="#f8fafc" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ==================== TITLE BANNER ==================== -->
+        <mxCell id="banner" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e3a5f;strokeColor=#1e3a5f;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="2000" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="titleMain" value="ENTITY RELATIONSHIP DIAGRAM" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#ffffff;fontSize=24;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="18" width="600" height="35" as="geometry"/>
+        </mxCell>
+        <mxCell id="titleSub" value="Employee Training &amp; Certification Tracker  ·  HRTrainingOps Schema  ·  AdventureWorks2022" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#cbd5e1;fontSize=13;align=left;" vertex="1" parent="1">
+          <mxGeometry x="40" y="52" width="700" height="25" as="geometry"/>
+        </mxCell>
+        <mxCell id="titleMeta" value="Phase I  ·  SQL Server 2016  ·  3NF  ·  v2.0" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#94a3b8;fontSize=11;align=right;" vertex="1" parent="1">
+          <mxGeometry x="1580" y="35" width="380" height="25" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ZONE BACKGROUNDS ==================== -->
+        <mxCell id="zoneExt" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e8ff;strokeColor=#a855f7;strokeWidth=1;dashed=1;dashPattern=8 4;opacity=40;" vertex="1" parent="1">
+          <mxGeometry x="30" y="110" width="310" height="620" as="geometry"/>
+        </mxCell>
+        <mxCell id="zoneExtLbl" value="EXTERNAL — AdventureWorks" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#7e22ce;fontSize=11;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="45" y="118" width="220" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="zoneCore" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=1;dashed=1;dashPattern=8 4;opacity=35;" vertex="1" parent="1">
+          <mxGeometry x="360" y="110" width="560" height="620" as="geometry"/>
+        </mxCell>
+        <mxCell id="zoneCoreLbl" value="CORE — HRTrainingOps" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#1d4ed8;fontSize=11;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="375" y="118" width="200" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="zoneFlow" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef9c3;strokeColor=#ca8a04;strokeWidth=1;dashed=1;dashPattern=8 4;opacity=40;" vertex="1" parent="1">
+          <mxGeometry x="940" y="110" width="340" height="620" as="geometry"/>
+        </mxCell>
+        <mxCell id="zoneFlowLbl" value="WORKFLOW — Queues &amp; Reviews" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#a16207;fontSize=11;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="955" y="118" width="220" height="20" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="zoneLog" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#dc2626;strokeWidth=1;dashed=1;dashPattern=8 4;opacity=35;" vertex="1" parent="1">
+          <mxGeometry x="360" y="750" width="920" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="zoneLogLbl" value="LOGGING &amp; AUDIT" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#dc2626;fontSize=11;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="375" y="758" width="160" height="20" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: Employee (External) ==================== -->
+        <mxCell id="emp" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #7c3aed;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#7c3aed;color:#fff;padding:10px 12px;font-weight:700;font-size:13px;text-align:center;letter-spacing:0.3px;&quot;&gt;HumanResources.Employee&lt;/div&gt;&lt;div style=&quot;background:#faf5ff;padding:10px 12px;font-size:11px;line-height:1.75;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;BusinessEntityID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;JobTitle&amp;nbsp;NVARCHAR(50)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;HireDate&amp;nbsp;DATE&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;CurrentFlag&amp;nbsp;BIT&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="55" y="160" width="260" height="130" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: Department (External) ==================== -->
+        <mxCell id="dept" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #7c3aed;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#7c3aed;color:#fff;padding:10px 12px;font-weight:700;font-size:13px;text-align:center;&quot;&gt;HumanResources.Department&lt;/div&gt;&lt;div style=&quot;background:#faf5ff;padding:10px 12px;font-size:11px;line-height:1.75;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;DepartmentID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;SMALLINT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;Name&amp;nbsp;NVARCHAR(50)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;GroupName&amp;nbsp;NVARCHAR(50)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="55" y="340" width="260" height="115" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: TrainingCourse ==================== -->
+        <mxCell id="tc" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #1e40af;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#1e40af;color:#fff;padding:10px 12px;font-weight:700;font-size:13px;text-align:center;&quot;&gt;TrainingCourse&lt;/div&gt;&lt;div style=&quot;background:#fff;padding:10px 12px;font-size:11px;line-height:1.75;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;CourseCode&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;NVARCHAR(10)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;CourseName&amp;nbsp;NVARCHAR(100)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ValidityMonths&amp;nbsp;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;IsMandatory&amp;nbsp;BIT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;CreatedDate&amp;nbsp;DATETIME2&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="385" y="160" width="240" height="145" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: TrainingRequests (HUB) ==================== -->
+        <mxCell id="tr" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:3px solid #047857;border-radius:4px;overflow:hidden;box-shadow:3px 3px 8px rgba(0,0,0,0.15);&quot;&gt;&lt;div style=&quot;background:#047857;color:#fff;padding:10px 12px;font-weight:700;font-size:13px;text-align:center;&quot;&gt;TrainingRequests&lt;/div&gt;&lt;div style=&quot;background:#ecfdf5;padding:10px 12px;font-size:11px;line-height:1.7;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;TrainingRequestID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT IDENTITY&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;BusinessEmployeeID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;CourseCode&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;NVARCHAR(10)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;DepartmentID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;SMALLINT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;EnrollmentDate&amp;nbsp;DATE&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ExamDate&amp;nbsp;DATE&lt;/span&gt;&amp;nbsp;·&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;Score&amp;nbsp;DECIMAL(5,2)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;CertificationExpiryDate&amp;nbsp;DATE&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;RequestStatus&amp;nbsp;NVARCHAR(20)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;CreatedDate&amp;nbsp;DATETIME2&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="660" y="145" width="250" height="230" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: DepartmentTrainingRequirement ==================== -->
+        <mxCell id="dtr" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #1e40af;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#1e40af;color:#fff;padding:10px 12px;font-weight:700;font-size:13px;text-align:center;&quot;&gt;DepartmentTrainingRequirement&lt;/div&gt;&lt;div style=&quot;background:#fff;padding:10px 12px;font-size:11px;line-height:1.75;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;RequirementID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT IDENTITY&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;DepartmentID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;SMALLINT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;CourseCode&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;NVARCHAR(10)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;IsRequired&amp;nbsp;BIT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;CreatedDate&amp;nbsp;DATETIME2&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#9333ea;font-weight:600;&quot;&gt;UQ&lt;/span&gt;&amp;nbsp;(DepartmentID, CourseCode)&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="385" y="430" width="260" height="155" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: ExpiredCertificationQueue ==================== -->
+        <mxCell id="ecq" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #b45309;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#b45309;color:#fff;padding:10px 12px;font-weight:700;font-size:12px;text-align:center;&quot;&gt;ExpiredCertificationQueue&lt;/div&gt;&lt;div style=&quot;background:#fffbeb;padding:10px 12px;font-size:11px;line-height:1.7;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;QueueID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT IDENTITY&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;TrainingRequestID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT&lt;/span&gt;&amp;nbsp;&lt;span style=&quot;color:#9333ea;font-weight:600;&quot;&gt;UQ&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;BusinessEmployeeID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;CourseCode&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;NVARCHAR(10)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ExpiryDate&amp;nbsp;DATE&lt;/span&gt;&amp;nbsp;·&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;DaysOverdue&amp;nbsp;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;QueueStatus&amp;nbsp;NVARCHAR(20)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;QueuedDate&amp;nbsp;DATETIME2&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="970" y="145" width="270" height="195" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: CertificationReleaseReview ==================== -->
+        <mxCell id="crr" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #b45309;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#b45309;color:#fff;padding:10px 12px;font-weight:700;font-size:12px;text-align:center;&quot;&gt;CertificationReleaseReview&lt;/div&gt;&lt;div style=&quot;background:#fffbeb;padding:10px 12px;font-size:11px;line-height:1.75;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;ReviewID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT IDENTITY&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;TrainingRequestID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ReviewDecision&amp;nbsp;NVARCHAR(30)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ReviewNotes&amp;nbsp;NVARCHAR(500)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ReviewedBy&amp;nbsp;NVARCHAR(100)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ReviewDate&amp;nbsp;DATETIME2&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="970" y="400" width="270" height="155" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: NotificationLog ==================== -->
+        <mxCell id="nl" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #dc2626;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#dc2626;color:#fff;padding:10px 12px;font-weight:700;font-size:13px;text-align:center;&quot;&gt;NotificationLog&lt;/div&gt;&lt;div style=&quot;background:#fef2f2;padding:10px 12px;font-size:11px;line-height:1.75;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;NotificationID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT IDENTITY&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#0369a1;font-weight:700;&quot;&gt;FK&lt;/span&gt;&amp;nbsp;BusinessEmployeeID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;NotificationType&amp;nbsp;NVARCHAR(50)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;MessageText&amp;nbsp;NVARCHAR(500)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;SentDate&amp;nbsp;DATETIME2&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="500" y="790" width="260" height="135" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== ENTITY: ErrorLog ==================== -->
+        <mxCell id="el" value="&lt;div style=&quot;font-family:Segoe UI,Arial,sans-serif;border:2px solid #dc2626;border-radius:4px;overflow:hidden;box-shadow:2px 2px 6px rgba(0,0,0,0.12);&quot;&gt;&lt;div style=&quot;background:#dc2626;color:#fff;padding:10px 12px;font-weight:700;font-size:13px;text-align:center;&quot;&gt;ErrorLog&lt;/div&gt;&lt;div style=&quot;background:#fef2f2;padding:10px 12px;font-size:11px;line-height:1.7;color:#1e293b;&quot;&gt;&lt;span style=&quot;color:#b45309;font-weight:700;&quot;&gt;PK&lt;/span&gt;&amp;nbsp;ErrorLogID&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;INT IDENTITY&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ErrorNumber&amp;nbsp;INT&lt;/span&gt;&amp;nbsp;·&amp;nbsp;&lt;span style=&quot;color:#64748b;&quot;&gt;ErrorLine&amp;nbsp;INT&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ErrorMessage&amp;nbsp;NVARCHAR(4000)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;ErrorProcedure&amp;nbsp;NVARCHAR(200)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;LogCategory&amp;nbsp;NVARCHAR(30)&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot;color:#64748b;&quot;&gt;LoggedDate&amp;nbsp;DATETIME2&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="860" y="790" width="270" height="135" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== LEGEND ==================== -->
+        <mxCell id="legendBox" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#334155;strokeWidth=2;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="130" width="340" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="legendTitle" value="LEGEND &amp; NOTATION" style="text;html=1;strokeColor=none;fillColor=#334155;fontColor=#ffffff;fontSize=13;fontStyle=1;align=center;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="130" width="340" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="legendBody" value="&lt;div style=&quot;font-family:Segoe UI,Arial;font-size:11px;line-height:2;color:#1e293b;padding:8px;&quot;&gt;&lt;b&gt;Crow&amp;rsquo;s Foot Cardinality&lt;/b&gt;&lt;br/&gt;───&amp;nbsp;&lt;span style=&quot;font-size:14px;&quot;&gt;|&amp;lt;&lt;/span&gt;&amp;nbsp;One&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;span style=&quot;font-size:14px;&quot;&gt;&amp;lt;|&amp;gt;&lt;/span&gt;&amp;nbsp;Many&lt;br/&gt;&lt;br/&gt;&lt;b style=&quot;color:#b45309;&quot;&gt;PK&lt;/b&gt;&amp;nbsp;Primary Key&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b style=&quot;color:#0369a1;&quot;&gt;FK&lt;/b&gt;&amp;nbsp;Foreign Key&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;b style=&quot;color:#9333ea;&quot;&gt;UQ&lt;/b&gt;&amp;nbsp;Unique&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Entity Zones&lt;/b&gt;&lt;br/&gt;&lt;span style=&quot;background:#faf5ff;padding:2px 6px;border:1px solid #7c3aed;&quot;&gt;Purple&lt;/span&gt;&amp;nbsp;AdventureWorks (external)&lt;br/&gt;&lt;span style=&quot;background:#eff6ff;padding:2px 6px;border:1px solid #1e40af;&quot;&gt;Blue&lt;/span&gt;&amp;nbsp;Core reference entities&lt;br/&gt;&lt;span style=&quot;background:#ecfdf5;padding:2px 6px;border:2px solid #047857;&quot;&gt;Green&lt;/span&gt;&amp;nbsp;Central transaction hub&lt;br/&gt;&lt;span style=&quot;background:#fffbeb;padding:2px 6px;border:1px solid #b45309;&quot;&gt;Amber&lt;/span&gt;&amp;nbsp;Workflow / queue&lt;br/&gt;&lt;span style=&quot;background:#fef2f2;padding:2px 6px;border:1px solid #dc2626;&quot;&gt;Red&lt;/span&gt;&amp;nbsp;Logging / audit&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Relationships&lt;/b&gt;&lt;br/&gt;Solid line = HRTrainingOps FK&lt;br/&gt;Dashed line = External AW FK&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Normalization&lt;/b&gt;&lt;br/&gt;Third Normal Form (3NF)&lt;br/&gt;7 entities · 12 relationships&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="168" width="320" height="375" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== RELATIONSHIP TABLE ==================== -->
+        <mxCell id="relBox" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#334155;strokeWidth=2;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="570" width="340" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="relTitle" value="RELATIONSHIP SUMMARY" style="text;html=1;strokeColor=none;fillColor=#334155;fontColor=#ffffff;fontSize=12;fontStyle=1;align=center;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="1320" y="570" width="340" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="relBody" value="&lt;table style=&quot;width:100%;font-family:Segoe UI,Arial;font-size:10px;border-collapse:collapse;&quot;&gt;&lt;tr style=&quot;background:#f1f5f9;&quot;&gt;&lt;td style=&quot;padding:4px 6px;font-weight:700;&quot;&gt;Parent&lt;/td&gt;&lt;td style=&quot;padding:4px 6px;font-weight:700;&quot;&gt;Child&lt;/td&gt;&lt;td style=&quot;padding:4px 6px;font-weight:700;&quot;&gt;Card.&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingCourse&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingRequests&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingCourse&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;DeptRequirement&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;Employee&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingRequests&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;Department&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;DeptRequirement&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;Department&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingRequests&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingRequests&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;ExpiredQueue&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:1&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingRequests&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;CertReview&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;Employee&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;ExpiredQueue&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;Employee&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;NotificationLog&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;TrainingCourse&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;ExpiredQueue&lt;/td&gt;&lt;td style=&quot;padding:3px 6px;border-top:1px solid #e2e8f0;&quot;&gt;1:M&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;overflow=fill;" vertex="1" parent="1">
+          <mxGeometry x="1328" y="602" width="324" height="258" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== FOOTER ==================== -->
+        <mxCell id="footer" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#1e293b;strokeColor=#1e293b;" vertex="1" parent="1">
+          <mxGeometry x="0" y="1380" width="2000" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="footerText" value="Team: Sahil Maniya · Parth Patel · Dhruv  |  Database: AdventureWorks2022  |  Schema: HRTrainingOps  |  Course: SQL Server Database Development" style="text;html=1;strokeColor=none;fillColor=none;fontColor=#94a3b8;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="400" y="1400" width="1200" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ==================== RELATIONSHIPS (Crow's Foot) ==================== -->
+        <!-- Employee -> TrainingRequests -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7c3aed;strokeWidth=2;dashed=1;dashPattern=8 4;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="emp" target="tr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1l" value="enrolls" style="edgeLabel;html=1;align=center;verticalAlign=middle;fontSize=10;fontColor=#7c3aed;fontStyle=2;" connectable="0" vertex="1" parent="e1">
+          <mxGeometry x="-0.15" y="1" relative="1" as="geometry"><mxPoint x="10" y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- Employee -> NotificationLog -->
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7c3aed;strokeWidth=2;dashed=1;dashPattern=8 4;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="emp" target="nl">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="185" y="700"/><mxPoint x="630" y="700"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2l" value="notified" style="edgeLabel;html=1;fontSize=10;fontColor=#7c3aed;fontStyle=2;" connectable="0" vertex="1" parent="e2">
+          <mxGeometry x="0.2" relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- Employee -> ExpiredQueue -->
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7c3aed;strokeWidth=2;dashed=1;dashPattern=8 4;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="emp" target="ecq">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="185" y="130"/><mxPoint x="1105" y="130"/></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Department -> DeptRequirement -->
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7c3aed;strokeWidth=2;dashed=1;dashPattern=8 4;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="dept" target="dtr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4l" value="requires" style="edgeLabel;html=1;fontSize=10;fontColor=#7c3aed;fontStyle=2;" connectable="0" vertex="1" parent="e4">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint y="-8" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- Department -> TrainingRequests -->
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#7c3aed;strokeWidth=2;dashed=1;dashPattern=8 4;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="dept" target="tr">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="185" y="500"/><mxPoint x="640" y="500"/></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- TrainingCourse -> TrainingRequests -->
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563eb;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="tc" target="tr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6l" value="offers" style="edgeLabel;html=1;fontSize=10;fontColor=#2563eb;fontStyle=1;" connectable="0" vertex="1" parent="e6">
+          <mxGeometry x="-0.05" relative="1" as="geometry"><mxPoint y="-10" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- TrainingCourse -> DeptRequirement -->
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563eb;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="tc" target="dtr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- TrainingCourse -> ExpiredQueue -->
+        <mxCell id="e8" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2563eb;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="tc" target="ecq">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="505" y="120"/><mxPoint x="1105" y="120"/></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- TrainingRequests -> ExpiredQueue (1:1) -->
+        <mxCell id="e9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b45309;strokeWidth=2;endArrow=ERone;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="tr" target="ecq">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9l" value="1 : 1" style="edgeLabel;html=1;fontSize=10;fontColor=#b45309;fontStyle=1;" connectable="0" vertex="1" parent="e9">
+          <mxGeometry x="-0.05" relative="1" as="geometry"><mxPoint y="-10" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- TrainingRequests -> CertReview -->
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#b45309;strokeWidth=2;endArrow=ERmany;endFill=0;startArrow=ERone;startFill=0;" edge="1" parent="1" source="tr" target="crr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e10l" value="reviewed" style="edgeLabel;html=1;fontSize=10;fontColor=#b45309;fontStyle=2;" connectable="0" vertex="1" parent="e10">
+          <mxGeometry x="-0.05" relative="1" as="geometry"><mxPoint y="10" as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- TrainingRequests -> NotificationLog (logical) -->
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#94a3b8;strokeWidth=1;dashed=1;endArrow=open;endFill=0;startArrow=none;" edge="1" parent="1" source="tr" target="nl">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e11l" value="generates" style="edgeLabel;html=1;fontSize=9;fontColor=#64748b;fontStyle=2;" connectable="0" vertex="1" parent="e11">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="-5" y="-5" as="offset"/></mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
