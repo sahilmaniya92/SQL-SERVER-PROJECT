@@ -60,21 +60,43 @@ Full specification: [PROJECT_PROPOSAL_HRTrainingOps.md](PROJECT_PROPOSAL_HRTrain
 
 ---
 
+## Phase II — Logic & Security
+
+| Area | Objects |
+|------|---------|
+| **Functions** | `fn_TrainingScoreClass` (scalar), `fn_GetEmployeeTrainingData` (inline TVF) |
+| **Views** | `vEmployeeTrainingSummary`, `vw_PendingCertifications`, `vw_ManagerDepartmentCompliance`, `vw_EmployeeSelfService` |
+| **Triggers** | Enrollment validation, status audit, queue status transitions |
+| **Procedures** | 6 core procs + static cursor + dynamic cursor (includes dynamic SQL compliance report) |
+| **Security** | 4 roles with GRANT / REVOKE / DENY — `security/permissions.sql` |
+| **Tests** | Workflow + permission simulations — `security/test_cases.sql` |
+
+### Demo logins (created by permissions.sql)
+
+| Login | Role | Notes |
+|-------|------|-------|
+| `HRTO_Admin` | HR_Admin | Full schema access |
+| `HRTO_Manager` | HR_Manager | Reviews + compliance |
+| `HRTO_Mgr_7` | HR_Manager | Row-filter demo for Department 7 |
+| `HRTO_Clerk` | Training_Clerk | Enroll/update; DENY review & DELETE |
+| `HRTO_Emp_288` | Employee_Client | Self-service view for employee 288 |
+
+---
+
 ## Repository Structure
 
 ```
-PROJECT/
+Project_phase1/
 ├── schema/                 Phase I - CREATE TABLE scripts
-├── views/                  Phase II
-├── procedures/             Phase II
-├── functions/              Phase II
-├── triggers/               Phase II
-├── security/               Phase II-III
+├── functions/              Phase II - scalar + TVF
+├── views/                  Phase II - reporting + row-level security
+├── triggers/               Phase II - DML enforcement
+├── procedures/             Phase II - workflows, dynamic SQL, cursors
+├── security/               Phase II - permissions.sql, test_cases.sql
+├── deploy_phase2.sql       Phase II master deploy (SQLCMD)
 ├── optimization/           Phase III
 ├── diagrams/
-├── screenshots/
-├── test_data.sql           Phase III
-├── final_script.sql        Phase III
+├── Screenshot/
 ├── PROJECT_PROPOSAL_HRTrainingOps.md
 └── README.md
 ```
@@ -96,7 +118,7 @@ PROJECT/
 3. Update the path if your folder is different:
 
 ```sql
-:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\schema"
+:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\Project_phase1\schema"
 ```
 
 4. Execute the script
@@ -134,6 +156,39 @@ Expected: **7 tables** listed.
 
 ---
 
+## Phase II — How to Deploy Logic & Security
+
+### Option A — Master script (recommended)
+
+1. Open `deploy_phase2.sql` in SSMS
+2. Enable **SQLCMD Mode**
+3. Set ScriptRoot to your `Project_phase1` folder:
+
+```sql
+:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\Project_phase1"
+```
+
+4. Execute the script (deploys functions → views → triggers → procedures → permissions)
+
+### Option B — Manual order
+
+1. `functions/` (scalar first, then TVF)
+2. `views/`
+3. `triggers/`
+4. `procedures/`
+5. `security/permissions.sql`
+
+### Run workflow tests
+
+```sql
+-- As dbo / sysadmin after Phase II deploy:
+:r D:\ITS\SEM-2\SQL SERVER\PROJECT\Project_phase1\security\test_cases.sql
+```
+
+Or open and execute `security/test_cases.sql` in SSMS.
+
+---
+
 ## Phase I Deliverables
 
 - [x] Business case and roles defined — see proposal document
@@ -142,6 +197,14 @@ Expected: **7 tables** listed.
 - [x] Constraints and relational integrity — PK, FK, CHECK, UNIQUE in each script
 - [ ] GitHub private repository initialized
 - [ ] ERD exported to PDF for Blackboard
+
+## Phase II Deliverables
+
+- [x] Stored procedures, triggers, functions, views
+- [x] Security and permissions — `security/permissions.sql`
+- [x] Test scripts simulating user workflows — `security/test_cases.sql`
+- [x] Dynamic SQL (`usp_RunComplianceReport`) and cursor procedures
+- [x] Structured GitHub commit history
 
 ---
 
