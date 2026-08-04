@@ -104,3 +104,54 @@ GO
 
 PRINT 'Procedure HRTrainingOps.usp_EnrollEmployeeInCourse created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: usp_EnrollEmployeeInCourse ---';
+BEGIN TRY
+    IF NOT EXISTS (SELECT 1 FROM HRTrainingOps.TrainingCourse WHERE CourseCode = N'TESTENR01')
+        INSERT INTO HRTrainingOps.TrainingCourse (CourseCode, CourseName, ValidityMonths, IsMandatory)
+        VALUES (N'TESTENR01', N'Enrollment Proc Test Course', 12, 0);
+
+    DECLARE @EmpID INT;
+    DECLARE @NewID INT;
+
+    SELECT TOP (1) @EmpID = e.BusinessEntityID
+    FROM HumanResources.Employee AS e
+    WHERE e.CurrentFlag = 1
+      AND NOT EXISTS (
+            SELECT 1
+            FROM HRTrainingOps.TrainingRequests AS tr
+            WHERE tr.BusinessEmployeeID = e.BusinessEntityID
+              AND tr.CourseCode = N'TESTENR01'
+              AND tr.RequestStatus IN (N'Pending', N'Completed')
+          )
+    ORDER BY e.BusinessEntityID;
+
+    IF @EmpID IS NULL
+        PRINT 'TEST RESULT: SKIP — no free employee available.';
+    ELSE
+    BEGIN
+        EXEC HRTrainingOps.usp_EnrollEmployeeInCourse
+            @BusinessEmployeeID = @EmpID,
+            @CourseCode = N'TESTENR01',
+            @EnrollmentDate = NULL,
+            @DepartmentID = NULL,
+            @NewTrainingRequestID = @NewID OUTPUT;
+
+        IF @NewID IS NOT NULL
+            PRINT 'TEST RESULT: PASS — enrolled TrainingRequestID=' + CAST(@NewID AS NVARCHAR(20));
+        ELSE
+            PRINT 'TEST RESULT: FAIL — no TrainingRequestID returned.';
+
+        DELETE FROM HRTrainingOps.NotificationLog
+        WHERE BusinessEmployeeID = @EmpID
+          AND NotificationType = N'Enrollment Confirmation'
+          AND MessageText LIKE N'%TESTENR01%';
+
+        DELETE FROM HRTrainingOps.TrainingRequests WHERE TrainingRequestID = @NewID;
+    END
+END TRY
+BEGIN CATCH
+    PRINT 'TEST RESULT: FAIL — ' + ERROR_MESSAGE();
+END CATCH;
+GO

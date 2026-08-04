@@ -6,11 +6,11 @@
 
     Usage (SSMS):
       1. Enable SQLCMD Mode (Query -> SQLCMD Mode)
-      2. Update :setvar ScriptRoot to your Project_phase1 folder path
+      2. Update :setvar ScriptRoot to your project root folder path
       3. Ensure Phase I schema is already deployed
       4. Execute this script
 */
-:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\Project_phase1"
+:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT"
 
 USE AdventureWorks2022;
 GO

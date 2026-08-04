@@ -97,3 +97,13 @@ GO
 
 PRINT 'Procedure HRTrainingOps.usp_RunComplianceReport created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: usp_RunComplianceReport (dynamic SQL) ---';
+EXEC HRTrainingOps.usp_RunComplianceReport
+    @DepartmentName = NULL,
+    @CourseCode = NULL,
+    @FromDate = '2020-01-01',
+    @ToDate = NULL;
+PRINT 'TEST RESULT: usp_RunComplianceReport executed successfully.';
+GO

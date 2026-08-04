@@ -35,3 +35,17 @@ GO
 
 PRINT 'Function HRTrainingOps.fn_TrainingScoreClass created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: fn_TrainingScoreClass ---';
+SELECT
+    HRTrainingOps.fn_TrainingScoreClass(85.00) AS ScoreClass,
+    CASE
+        WHEN HRTrainingOps.fn_TrainingScoreClass(85.00) = N'Pass'
+            THEN N'PASS'
+        ELSE N'FAIL'
+    END AS TestResult;
+-- Expected: ScoreClass = Pass, TestResult = PASS
+GO
+
+

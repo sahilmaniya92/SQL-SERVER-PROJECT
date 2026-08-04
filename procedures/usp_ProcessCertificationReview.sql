@@ -146,3 +146,78 @@ GO
 
 PRINT 'Procedure HRTrainingOps.usp_ProcessCertificationReview created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: usp_ProcessCertificationReview ---';
+BEGIN TRY
+    IF NOT EXISTS (SELECT 1 FROM HRTrainingOps.TrainingCourse WHERE CourseCode = N'TESTREV01')
+        INSERT INTO HRTrainingOps.TrainingCourse (CourseCode, CourseName, ValidityMonths, IsMandatory)
+        VALUES (N'TESTREV01', N'Review Proc Test Course', 12, 0);
+
+    DECLARE @EmpID INT;
+    DECLARE @ReqID INT;
+    DECLARE @QueueID INT;
+    DECLARE @ReviewID INT;
+
+    SELECT TOP (1) @EmpID = e.BusinessEntityID
+    FROM HumanResources.Employee AS e
+    WHERE e.CurrentFlag = 1
+      AND NOT EXISTS (
+            SELECT 1
+            FROM HRTrainingOps.TrainingRequests AS tr
+            WHERE tr.BusinessEmployeeID = e.BusinessEntityID
+              AND tr.CourseCode = N'TESTREV01'
+              AND tr.RequestStatus IN (N'Pending', N'Completed')
+          )
+    ORDER BY e.BusinessEntityID;
+
+    IF @EmpID IS NULL
+        PRINT 'TEST RESULT: SKIP — no free employee available.';
+    ELSE
+    BEGIN
+        INSERT INTO HRTrainingOps.TrainingRequests
+            (BusinessEmployeeID, CourseCode, EnrollmentDate, ExamDate, Score,
+             CertificationExpiryDate, RequestStatus)
+        VALUES
+            (@EmpID, N'TESTREV01', '2023-01-01', '2023-01-15', 75.00, '2023-06-01', N'Expired');
+
+        SET @ReqID = SCOPE_IDENTITY();
+
+        INSERT INTO HRTrainingOps.ExpiredCertificationQueue
+            (TrainingRequestID, BusinessEmployeeID, CourseCode, ExpiryDate, DaysOverdue, QueueStatus)
+        VALUES
+            (@ReqID, @EmpID, N'TESTREV01', '2023-06-01', 100, N'Pending Review');
+
+        SET @QueueID = SCOPE_IDENTITY();
+
+        EXEC HRTrainingOps.usp_ProcessCertificationReview
+            @QueueID = @QueueID,
+            @ReviewDecision = N'Waived',
+            @ReviewNotes = N'Test case waiver',
+            @ReviewedBy = N'TEST_SCRIPT';
+
+        SELECT @ReviewID = ReviewID
+        FROM HRTrainingOps.CertificationReleaseReview
+        WHERE TrainingRequestID = @ReqID
+          AND ReviewedBy = N'TEST_SCRIPT';
+
+        IF @ReviewID IS NOT NULL
+           AND EXISTS (
+                SELECT 1 FROM HRTrainingOps.ExpiredCertificationQueue
+                WHERE QueueID = @QueueID AND QueueStatus = N'Resolved'
+           )
+            PRINT 'TEST RESULT: PASS — review completed, QueueID resolved.';
+        ELSE
+            PRINT 'TEST RESULT: FAIL — review was not recorded/resolved.';
+
+        DELETE FROM HRTrainingOps.CertificationReleaseReview WHERE ReviewID = @ReviewID;
+        DELETE FROM HRTrainingOps.NotificationLog
+        WHERE BusinessEmployeeID = @EmpID AND MessageText LIKE N'%TESTREV01%';
+        DELETE FROM HRTrainingOps.ExpiredCertificationQueue WHERE QueueID = @QueueID;
+        DELETE FROM HRTrainingOps.TrainingRequests WHERE TrainingRequestID = @ReqID;
+    END
+END TRY
+BEGIN CATCH
+    PRINT 'TEST RESULT: FAIL — ' + ERROR_MESSAGE();
+END CATCH;
+GO

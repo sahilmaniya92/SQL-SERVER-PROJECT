@@ -23,96 +23,85 @@ HRTrainingOps is a back-end relational database system for AdventureWorks HR. It
 | Parth Patel | | | Logic Developer |
 | Dhruv | | | Security & Optimization Lead |
 
+### Role Responsibilities
+
+| Role | Responsibilities |
+|------|------------------|
+| **Schema Designer** (Sahil) | ERD, normalization, CREATE TABLE scripts, views, final integration |
+| **Logic Developer** (Parth) | Stored procedures, functions, triggers, transactions |
+| **Security & Optimization Lead** (Dhruv) | Roles, permissions, indexes, performance analysis, cursors |
+
 ---
 
 ## Repository Structure
 
 ```
 SQL-SERVER-PROJECT/
-├── Project_phase1/
-│   ├── schema/                         Phase I  - CREATE TABLE scripts
-│   ├── functions/                      Phase II - scalar + inline TVF
-│   ├── views/                          Phase II - reporting + row-level security
-│   ├── triggers/                       Phase II - DML enforcement
-│   ├── procedures/                     Phase II - workflows, dynamic SQL, cursors
-│   ├── security/                       Phase II - permissions.sql, test_cases.sql
-│   ├── deploy_phase2.sql               Phase II master deploy (SQLCMD)
-│   ├── diagrams/                       ERD (draw.io + PNG/JPG)
-│   ├── PROJECT_PROPOSAL_HRTrainingOps.md
-│   └── README.md
-├── optimization/                       Phase III (planned)
+├── schema/                         Phase I  - CREATE TABLE scripts
+├── functions/                      Phase II - scalar + inline TVF
+├── views/                          Phase II - reporting + row-level security
+├── triggers/                       Phase II - DML enforcement
+├── procedures/                     Phase II - workflows, dynamic SQL, cursors
+├── security/                       Phase II - permissions.sql, test_cases.sql
+├── diagrams/                       ERD (draw.io + images)
+├── Screenshot/                     Deployment proof screenshots
+├── deploy_schema.sql               Phase I master deploy (SQLCMD)
+├── deploy_phase2.sql               Phase II master deploy (SQLCMD)
+├── PROJECT_PROPOSAL_HRTrainingOps.md
 └── README.md
 ```
 
 ---
 
-## Phase I — Quick Start
+## How to Run (From Scratch)
 
-1. Open SSMS with **AdventureWorks2022** restored
+### Prerequisites
+
+- Microsoft SQL Server 2016+ with **AdventureWorks2022** restored
+- SSMS with **SQLCMD Mode** enabled for master deploy scripts
+
+### Step 1 — Deploy Phase I schema
+
+1. Open `deploy_schema.sql`
+2. Enable **SQLCMD Mode** (`Query` → `SQLCMD Mode`)
+3. Set your local path:
+
+```sql
+:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\schema"
+```
+
+4. Execute (`F5`)
+
+### Step 2 — Deploy Phase II logic & security
+
+1. Open `deploy_phase2.sql`
 2. Enable **SQLCMD Mode**
-3. Run `Project_phase1/schema/deploy_schema.sql`
-4. Update `:setvar ScriptRoot` to your local path:
+3. Set your local path:
 
 ```sql
-:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\Project_phase1\schema"
+:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT"
 ```
 
-**Full instructions:** [Project_phase1/README.md](Project_phase1/README.md)
+4. Execute (`F5`)
+
+### Step 3 — Run workflow tests
+
+Open and execute `security/test_cases.sql` as `dbo` / sysadmin.
+
+Each function/view/trigger/procedure script also includes **one built-in test case** at the bottom — open any file and run it after its dependencies exist.
 
 ---
 
-## Phase II — Logic & Security
+## Phase Deliverables
 
-### Deploy
+| Phase | Status | Contents |
+|-------|--------|----------|
+| **Phase I** | Done | Schema (7 tables), ERD, proposal |
+| **Phase II** | Done | Functions, views, triggers, procedures, security, tests |
+| **Phase III** | Planned | Indexes, test data, `final_script.sql` |
 
-1. Deploy Phase I schema first
-2. Open `Project_phase1/deploy_phase2.sql` in SSMS
-3. Enable **SQLCMD Mode**
-4. Set ScriptRoot and execute:
-
-```sql
-:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\Project_phase1"
-```
-
-5. Run workflow / permission tests:
-
-```sql
--- Open and execute:
-Project_phase1/security/test_cases.sql
-```
-
-### Deliverables
-
-| Area | Objects |
-|------|---------|
-| **Functions** | `fn_TrainingScoreClass` (scalar), `fn_GetEmployeeTrainingData` (inline TVF) |
-| **Views** | `vEmployeeTrainingSummary`, `vw_PendingCertifications`, `vw_ManagerDepartmentCompliance`, `vw_EmployeeSelfService` |
-| **Triggers** | Enrollment validation, status audit, queue status transitions |
-| **Procedures** | 6 core procs + static cursor + dynamic cursor (includes dynamic SQL compliance report) |
-| **Security** | 4 roles with GRANT / REVOKE / DENY |
-| **Tests** | `security/test_cases.sql` — enrollment, review, compliance, permission checks |
-
-### Demo logins
-
-| Login | Role | Notes |
-|-------|------|-------|
-| `HRTO_Admin` | HR_Admin | Full schema access |
-| `HRTO_Manager` | HR_Manager | Reviews + compliance |
-| `HRTO_Mgr_7` | HR_Manager | Row-filter demo for Department 7 |
-| `HRTO_Clerk` | Training_Clerk | Enroll/update; DENY review & DELETE |
-| `HRTO_Emp_288` | Employee_Client | Self-service view for employee 288 |
-
----
-
-## Status
-
-- [x] **Phase I** — Schema, ERD, proposal, constraints
-- [x] **Phase II** — Procedures, functions, views, triggers, security, test scripts
-- [ ] **Phase III** — Indexes, test data, `final_script.sql`
-
-**Proposal:** [Project_phase1/PROJECT_PROPOSAL_HRTrainingOps.md](Project_phase1/PROJECT_PROPOSAL_HRTrainingOps.md)
-
-**ERD:** [Project_phase1/diagrams/hrtrainingops_erd.drawio](Project_phase1/diagrams/hrtrainingops_erd.drawio)
+**Proposal:** [PROJECT_PROPOSAL_HRTrainingOps.md](PROJECT_PROPOSAL_HRTrainingOps.md)  
+**ERD:** [diagrams/hrtrainingops_erd.drawio](diagrams/hrtrainingops_erd.drawio)
 
 ---
 

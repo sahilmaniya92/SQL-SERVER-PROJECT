@@ -74,3 +74,5 @@ GO
 
 PRINT 'View HRTrainingOps.vw_ManagerDepartmentCompliance created.';
 GO
+
+

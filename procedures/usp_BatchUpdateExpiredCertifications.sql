@@ -72,3 +72,63 @@ GO
 
 PRINT 'Procedure HRTrainingOps.usp_BatchUpdateExpiredCertifications created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: usp_BatchUpdateExpiredCertifications ---';
+BEGIN TRY
+    IF NOT EXISTS (SELECT 1 FROM HRTrainingOps.TrainingCourse WHERE CourseCode = N'TESTBAT01')
+        INSERT INTO HRTrainingOps.TrainingCourse (CourseCode, CourseName, ValidityMonths, IsMandatory)
+        VALUES (N'TESTBAT01', N'Batch Expiry Test Course', 12, 0);
+
+    DECLARE @EmpID INT;
+    DECLARE @ReqID INT;
+    DECLARE @RowsQueued INT;
+    DECLARE @QueueID INT;
+
+    SELECT TOP (1) @EmpID = e.BusinessEntityID
+    FROM HumanResources.Employee AS e
+    WHERE e.CurrentFlag = 1
+      AND NOT EXISTS (
+            SELECT 1
+            FROM HRTrainingOps.TrainingRequests AS tr
+            WHERE tr.BusinessEmployeeID = e.BusinessEntityID
+              AND tr.CourseCode = N'TESTBAT01'
+              AND tr.RequestStatus IN (N'Pending', N'Completed')
+          )
+    ORDER BY e.BusinessEntityID;
+
+    IF @EmpID IS NULL
+        PRINT 'TEST RESULT: SKIP — no free employee available.';
+    ELSE
+    BEGIN
+        INSERT INTO HRTrainingOps.TrainingRequests
+            (BusinessEmployeeID, CourseCode, EnrollmentDate, ExamDate, Score,
+             CertificationExpiryDate, RequestStatus)
+        VALUES
+            (@EmpID, N'TESTBAT01', '2023-01-01', '2023-01-15', 90.00, '2023-06-01', N'Completed');
+
+        SET @ReqID = SCOPE_IDENTITY();
+
+        EXEC HRTrainingOps.usp_BatchUpdateExpiredCertifications
+            @AsOfDate = NULL,
+            @RowsQueued = @RowsQueued OUTPUT;
+
+        SELECT @QueueID = QueueID
+        FROM HRTrainingOps.ExpiredCertificationQueue
+        WHERE TrainingRequestID = @ReqID;
+
+        IF @QueueID IS NOT NULL
+            PRINT 'TEST RESULT: PASS — queued TrainingRequestID=' + CAST(@ReqID AS NVARCHAR(20))
+                 + N', RowsQueued=' + CAST(@RowsQueued AS NVARCHAR(20));
+        ELSE
+            PRINT 'TEST RESULT: FAIL — expired request was not queued.';
+
+        IF @QueueID IS NOT NULL
+            DELETE FROM HRTrainingOps.ExpiredCertificationQueue WHERE QueueID = @QueueID;
+        DELETE FROM HRTrainingOps.TrainingRequests WHERE TrainingRequestID = @ReqID;
+    END
+END TRY
+BEGIN CATCH
+    PRINT 'TEST RESULT: FAIL — ' + ERROR_MESSAGE();
+END CATCH;
+GO

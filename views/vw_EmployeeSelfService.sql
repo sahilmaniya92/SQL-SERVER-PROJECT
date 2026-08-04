@@ -48,3 +48,5 @@ GO
 
 PRINT 'View HRTrainingOps.vw_EmployeeSelfService created.';
 GO
+
+

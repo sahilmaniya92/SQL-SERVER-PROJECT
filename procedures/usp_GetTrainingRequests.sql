@@ -65,3 +65,12 @@ GO
 
 PRINT 'Procedure HRTrainingOps.usp_GetTrainingRequests created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: usp_GetTrainingRequests ---';
+EXEC HRTrainingOps.usp_GetTrainingRequests
+    @RequestStatus = N'Pending',
+    @CourseCode = NULL,
+    @BusinessEmployeeID = NULL;
+PRINT 'TEST RESULT: usp_GetTrainingRequests executed successfully.';
+GO

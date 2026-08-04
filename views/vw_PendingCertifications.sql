@@ -51,3 +51,4 @@ GO
 
 PRINT 'View HRTrainingOps.vw_PendingCertifications created.';
 GO
+

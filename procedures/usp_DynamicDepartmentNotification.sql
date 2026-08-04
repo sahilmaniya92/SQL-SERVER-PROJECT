@@ -133,3 +133,33 @@ GO
 
 PRINT 'Procedure HRTrainingOps.usp_DynamicDepartmentNotification created (dynamic cursor).';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: usp_DynamicDepartmentNotification (dynamic cursor) ---';
+BEGIN TRY
+    IF NOT EXISTS (SELECT 1 FROM HRTrainingOps.TrainingCourse WHERE CourseCode = N'TESTDYN01')
+        INSERT INTO HRTrainingOps.TrainingCourse (CourseCode, CourseName, ValidityMonths, IsMandatory)
+        VALUES (N'TESTDYN01', N'Dynamic Cursor Test Course', 12, 0);
+
+    /* Ensure Production (7) requires TESTDYN01 so the dynamic cursor has work */
+    IF EXISTS (SELECT 1 FROM HumanResources.Department WHERE DepartmentID = 7)
+       AND NOT EXISTS (
+            SELECT 1 FROM HRTrainingOps.DepartmentTrainingRequirement
+            WHERE DepartmentID = 7 AND CourseCode = N'TESTDYN01'
+       )
+        INSERT INTO HRTrainingOps.DepartmentTrainingRequirement (DepartmentID, CourseCode, IsRequired)
+        VALUES (7, N'TESTDYN01', 1);
+
+    DECLARE @Created INT;
+
+    EXEC HRTrainingOps.usp_DynamicDepartmentNotification
+        @DepartmentName = N'Production',
+        @NotificationsCreated = @Created OUTPUT;
+
+    PRINT 'TEST RESULT: PASS — dynamic cursor ran. NotificationsCreated='
+         + CAST(ISNULL(@Created, 0) AS NVARCHAR(20));
+END TRY
+BEGIN CATCH
+    PRINT 'TEST RESULT: FAIL — ' + ERROR_MESSAGE();
+END CATCH;
+GO

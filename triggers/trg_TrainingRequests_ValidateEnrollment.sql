@@ -91,3 +91,41 @@ GO
 
 PRINT 'Trigger HRTrainingOps.trg_TrainingRequests_ValidateEnrollment created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: trg_TrainingRequests_ValidateEnrollment (rejects future EnrollmentDate) ---';
+BEGIN TRY
+    IF NOT EXISTS (SELECT 1 FROM HRTrainingOps.TrainingCourse WHERE CourseCode = N'TESTVAL01')
+        INSERT INTO HRTrainingOps.TrainingCourse (CourseCode, CourseName, ValidityMonths, IsMandatory)
+        VALUES (N'TESTVAL01', N'Trigger Validate Test Course', 12, 0);
+
+    DECLARE @EmpID INT;
+    SELECT TOP (1) @EmpID = BusinessEntityID
+    FROM HumanResources.Employee
+    WHERE CurrentFlag = 1
+    ORDER BY BusinessEntityID;
+
+    IF @EmpID IS NULL
+        PRINT 'TEST RESULT: SKIP — no active employee found.';
+    ELSE
+    BEGIN
+        BEGIN TRY
+            INSERT INTO HRTrainingOps.TrainingRequests
+                (BusinessEmployeeID, CourseCode, EnrollmentDate, RequestStatus)
+            VALUES
+                (@EmpID, N'TESTVAL01', DATEADD(DAY, 7, CAST(SYSDATETIME() AS DATE)), N'Pending');
+
+            PRINT 'TEST RESULT: FAIL — future EnrollmentDate was accepted.';
+        END TRY
+        BEGIN CATCH
+            IF ERROR_NUMBER() = 50001
+                PRINT 'TEST RESULT: PASS — trigger blocked future EnrollmentDate.';
+            ELSE
+                PRINT 'TEST RESULT: FAIL — unexpected error: ' + ERROR_MESSAGE();
+        END CATCH;
+    END
+END TRY
+BEGIN CATCH
+    PRINT 'TEST RESULT: FAIL — ' + ERROR_MESSAGE();
+END CATCH;
+GO

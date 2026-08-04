@@ -53,3 +53,10 @@ GO
 
 PRINT 'Procedure HRTrainingOps.usp_GetDepartmentTrainingStats created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: usp_GetDepartmentTrainingStats ---';
+EXEC HRTrainingOps.usp_GetDepartmentTrainingStats
+    @DepartmentID = 7;
+PRINT 'TEST RESULT: usp_GetDepartmentTrainingStats executed successfully.';
+GO

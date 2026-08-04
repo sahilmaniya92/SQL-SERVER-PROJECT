@@ -51,3 +51,5 @@ GO
 
 PRINT 'View HRTrainingOps.vEmployeeTrainingSummary created.';
 GO
+
+

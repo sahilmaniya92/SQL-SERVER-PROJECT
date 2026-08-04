@@ -49,3 +49,15 @@ GO
 
 PRINT 'Function HRTrainingOps.fn_GetEmployeeTrainingData created.';
 GO
+
+/* ========== TEST CASE ========== */
+PRINT '--- TEST: fn_GetEmployeeTrainingData ---';
+SELECT TOP (5) *
+FROM HRTrainingOps.fn_GetEmployeeTrainingData(288);
+-- Expected: 0+ rows for employee 288 (empty is OK if no enrollments yet)
+PRINT 'TEST RESULT: fn_GetEmployeeTrainingData executed successfully.';
+GO
+
+
+
+
