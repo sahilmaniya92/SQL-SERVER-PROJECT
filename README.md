@@ -21,7 +21,7 @@ HRTrainingOps is a back-end relational database system for AdventureWorks HR. It
 |------|-------------|-----------------|------|
 | Sahil Maniya | | sahilmaniya92 | Schema Designer |
 | Parth Patel | | | Logic Developer |
-| Dhruv | | | Security & Optimization Lead |
+| Dhruv Patel| | | Security & Optimization Lead |
 
 ### Role Responsibilities
 
