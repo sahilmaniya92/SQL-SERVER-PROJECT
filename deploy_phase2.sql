@@ -10,7 +10,7 @@
       3. Ensure Phase I schema is already deployed
       4. Execute this script
 */
-:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT"
+:setvar ScriptRoot "c:\Users\parth\Desktop\sem-2\SQL_SERVER_DEVELOPMENT\Project"
 
 USE AdventureWorks2022;
 GO

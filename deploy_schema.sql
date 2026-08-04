@@ -9,7 +9,7 @@
       2. Update :setvar ScriptRoot to your local schema folder path
       3. Execute this script
 */
-:setvar ScriptRoot "D:\ITS\SEM-2\SQL SERVER\PROJECT\schema"
+:setvar ScriptRoot "c:\Users\parth\Desktop\sem-2\SQL_SERVER_DEVELOPMENT\Project\schema"
 
 USE AdventureWorks2022;
 GO
