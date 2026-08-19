@@ -69,6 +69,8 @@ A **T-SQL-only** database layer added to AdventureWorks2022 that:
 
 ## Three Business Workflows
 
+> Each workflow below includes an ER diagram scoped to just the entities and relationships that workflow touches — for the complete normalized physical model, see `diagrams/hrtrainingops_erd.drawio`.
+
 ### Workflow 1 — Employee Enrollment
 
 ```
@@ -84,6 +86,43 @@ Training_Clerk → usp_EnrollEmployeeInCourse
   trg_TrainingRequests_ValidateEnrollment fires (re-validates dates/score)
   ↓
   On failure → ROLLBACK + ErrorLog entry
+```
+
+**Entities involved:**
+
+```mermaid
+erDiagram
+    HR_Employee ||--o{ TrainingRequests : "enrolls in"
+    TrainingCourse ||--o{ TrainingRequests : "defines validity for"
+    HR_Employee ||--o{ NotificationLog : "receives"
+    TrainingRequests ||--o{ ErrorLog : "on failure, logs to"
+
+    HR_Employee {
+        int BusinessEntityID PK
+        bit CurrentFlag
+    }
+    TrainingCourse {
+        string CourseCode PK
+        string CourseName
+        int ValidityMonths
+    }
+    TrainingRequests {
+        int TrainingRequestID PK
+        int BusinessEmployeeID FK
+        string CourseCode FK
+        date EnrollmentDate
+        string RequestStatus
+    }
+    NotificationLog {
+        int NotificationID PK
+        int BusinessEmployeeID FK
+        string NotificationType
+    }
+    ErrorLog {
+        int ErrorLogID PK
+        string ErrorProcedure
+        string LogCategory
+    }
 ```
 
 **Demonstrates:** Stored procedure, transaction control, TRY/CATCH, AFTER trigger
@@ -114,6 +153,47 @@ HR_Manager → usp_ProcessCertificationReview
   COMMIT
 ```
 
+**Entities involved:**
+
+```mermaid
+erDiagram
+    TrainingRequests ||--o| ExpiredCertificationQueue : "flows into (1:1)"
+    TrainingRequests ||--o{ CertificationReleaseReview : "receives decision on"
+    HR_Employee ||--o{ ExpiredCertificationQueue : "owns"
+    HR_Employee ||--o{ NotificationLog : "notified via"
+    ExpiredCertificationQueue ||--o{ ErrorLog : "audit entry on review"
+
+    TrainingRequests {
+        int TrainingRequestID PK
+        date CertificationExpiryDate
+        string RequestStatus
+    }
+    ExpiredCertificationQueue {
+        int QueueID PK
+        int TrainingRequestID FK
+        int BusinessEmployeeID FK
+        string QueueStatus
+        int DaysOverdue
+    }
+    CertificationReleaseReview {
+        int ReviewID PK
+        int TrainingRequestID FK
+        string ReviewDecision
+        string ReviewedBy
+    }
+    HR_Employee {
+        int BusinessEntityID PK
+    }
+    NotificationLog {
+        int NotificationID PK
+        int BusinessEmployeeID FK
+    }
+    ErrorLog {
+        int ErrorLogID PK
+        string LogCategory
+    }
+```
+
 **Demonstrates:** Batch procedure, static cursor, multi-table transaction, conditional logic
 
 **Achieves:** Closes the exact compliance risk the proposal calls out — certifications that would otherwise expire unnoticed are automatically detected, queued, and routed to a manager decision (Re-Enroll / Waived / Terminated), with every decision permanently logged. Nothing expires silently anymore.
@@ -130,6 +210,47 @@ usp_DynamicDepartmentNotification (DYNAMIC cursor)
   Iterate departments with compliance gaps, generate notifications
   ↓
 vw_ManagerDepartmentCompliance (row-level department filter)
+```
+
+**Entities involved:**
+
+```mermaid
+erDiagram
+    TrainingCourse ||--o{ TrainingRequests : "reported on"
+    HR_Department ||--o{ TrainingRequests : "grouped by"
+    HR_Department ||--o{ DepartmentTrainingRequirement : "requires"
+    TrainingCourse ||--o{ DepartmentTrainingRequirement : "required by"
+    HR_Employee ||--o{ TrainingRequests : "enrolled via"
+    HR_Employee ||--o{ NotificationLog : "notified of gaps"
+
+    TrainingRequests {
+        int TrainingRequestID PK
+        string CourseCode FK
+        smallint DepartmentID FK
+        string RequestStatus
+        date CertificationExpiryDate
+    }
+    TrainingCourse {
+        string CourseCode PK
+        string CourseName
+    }
+    HR_Department {
+        smallint DepartmentID PK
+        string Name
+    }
+    DepartmentTrainingRequirement {
+        int RequirementID PK
+        smallint DepartmentID FK
+        string CourseCode FK
+        bit IsRequired
+    }
+    HR_Employee {
+        int BusinessEntityID PK
+    }
+    NotificationLog {
+        int NotificationID PK
+        int BusinessEmployeeID FK
+    }
 ```
 
 **Demonstrates:** Dynamic SQL, dynamic cursor, row-level view security
