@@ -88,6 +88,8 @@ Training_Clerk → usp_EnrollEmployeeInCourse
 
 **Demonstrates:** Stored procedure, transaction control, TRY/CATCH, AFTER trigger
 
+**Achieves:** Replaces manual enrollment tracking with a single validated source of truth — no duplicate enrollments, no future-dated or invalid entries can slip in, and every enrollment leaves a notification + audit trail automatically, with zero manual follow-up.
+
 ### Workflow 2 — Expired Certification Review
 
 ```
@@ -114,6 +116,8 @@ HR_Manager → usp_ProcessCertificationReview
 
 **Demonstrates:** Batch procedure, static cursor, multi-table transaction, conditional logic
 
+**Achieves:** Closes the exact compliance risk the proposal calls out — certifications that would otherwise expire unnoticed are automatically detected, queued, and routed to a manager decision (Re-Enroll / Waived / Terminated), with every decision permanently logged. Nothing expires silently anymore.
+
 ### Workflow 3 — Compliance Report (Dynamic SQL)
 
 ```
@@ -129,6 +133,22 @@ vw_ManagerDepartmentCompliance (row-level department filter)
 ```
 
 **Demonstrates:** Dynamic SQL, dynamic cursor, row-level view security
+
+**Achieves:** Turns reactive HR follow-up into self-service reporting — managers get on-demand compliance visibility filtered by department, course, or date range without a developer writing a new report every time, and departments with missing required training get proactively flagged instead of discovered during an audit. Each manager sees only their own department's data.
+
+---
+
+## What the Three Workflows Achieve Together
+
+| Business gap (from the proposal) | Closed by |
+|---|---|
+| No central training register | Workflow 1 — every enrollment lands in one validated table the moment it happens |
+| Manual expiry tracking, certs lapse unnoticed | Workflow 2 — expiry detection, queueing, and manager sign-off are fully automated with an audit trail |
+| No role-based access to sensitive HR data | Enforced across all three workflows via database roles, `DENY`, and row-level views — not bolted on afterward |
+| No audit trail for reviews or errors | Workflow 2's review log + `ErrorLog`/`NotificationLog` populated by all three workflows |
+| Slow, hard-coded compliance reporting | Workflow 3 — one parameterized procedure replaces what would otherwise be dozens of static reports |
+
+Together, the three workflows take HR training compliance from "manual, reactive, unaudited" to "automated, proactive, fully logged" — end to end, in T-SQL only.
 
 ---
 
