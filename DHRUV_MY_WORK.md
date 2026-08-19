@@ -97,6 +97,48 @@ END CATCH;
 - `REVERT` is called in both `TRY` and `CATCH` so a failed test never leaves the session impersonating another principal.
 - Five of these (5a–5e) cover: Clerk enrolls ✓, Clerk denied review ✗, Employee self-service only, Manager runs reports ✓, Clerk denied DELETE ✗.
 
+**Negative test — a bad enrollment should fail, not silently succeed:**
+
+```sql
+BEGIN TRY
+    EXEC HRTrainingOps.usp_EnrollEmployeeInCourse
+        @BusinessEmployeeID = @AnyEmp,
+        @CourseCode = N'HRCOMP02',
+        @EnrollmentDate = '2099-01-01',   -- future date, should be rejected
+        @NewTrainingRequestID = @BadID OUTPUT;
+    PRINT 'ERROR: future enrollment should have failed.';
+END TRY
+BEGIN CATCH
+    PRINT 'Expected failure caught: ' + ERROR_MESSAGE();
+END CATCH;
+```
+- Same pattern as the permission tests: the `CATCH` firing **is** the pass condition. If this ever prints `ERROR:`, the trigger validation broke.
+
+**Workflow 2 — chaining my batch procedure straight into my cursor:**
+
+```sql
+EXEC HRTrainingOps.usp_BatchUpdateExpiredCertifications
+    @AsOfDate = NULL, @RowsQueued = @Queued OUTPUT;
+PRINT 'Rows queued: ' + CAST(@Queued AS NVARCHAR(20));
+
+EXEC HRTrainingOps.usp_ProcessExpiryQueueWithCursor
+    @ProcessedCount = @Processed OUTPUT;
+PRINT 'Static cursor processed: ' + CAST(@Processed AS NVARCHAR(20));
+```
+- One call queues whatever's newly expired, the next call (my static cursor) walks that exact queue and notifies — proves the two pieces I built for Workflow 2 actually hand off to each other correctly, not just individually.
+
+**Workflow 3 — dynamic SQL and dynamic cursor, back to back:**
+
+```sql
+EXEC HRTrainingOps.usp_RunComplianceReport
+    @DepartmentName = NULL, @CourseCode = N'SAFETY01', @FromDate = '2020-01-01', @ToDate = NULL;
+
+EXEC HRTrainingOps.usp_DynamicDepartmentNotification
+    @DepartmentName = NULL, @NotificationsCreated = @NotifyCount OUTPUT;
+PRINT 'Dynamic cursor notifications created: ' + CAST(@NotifyCount AS NVARCHAR(20));
+```
+- Both dynamic-SQL requirements (the parameterized report and the dynamic cursor) get exercised in the same run, with `@NotificationsCreated OUTPUT` giving a visible number to point at during the demo instead of just "it ran."
+
 ---
 
 ## 3. Indexing (`optimization/indexes.sql`)
