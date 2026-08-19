@@ -17,15 +17,11 @@ Presentation script — code snippet, then what it does and why, for each piece 
 
 ## Why I Built What I Built
 
-**Why security and optimization landed with me specifically:** the proposal splits the team into three lanes — Schema Design (Sahil), Logic Development (Parth), Security & Optimization (me) — and names the exact business problems each lane exists to close. Two of those problems point directly at me: *"No role-based access → sensitive HR data lacks controlled visibility"* and *"Poor query performance → compliance reports slow without proper indexing."* Someone had to own each end to end — not just write the roles/indexes, but prove them with `EXECUTE AS` and `STATISTICS IO` rather than asserting they work.
-
-**Why I picked up 3 stored procedures, not just security scripts:** the course spec required exactly **one dynamic SQL procedure** and **one dynamic cursor**. Both of the features that satisfy that requirement — flexible compliance reporting and proactive department-gap notification — are really *reporting/visibility* concerns: who's allowed to see what, and surfacing compliance gaps before they become audit findings. That's the same problem security exists to solve, just read-side instead of write-side, so it made more sense for me to own that whole slice than to split a security-flavored feature across two people. `usp_BatchUpdateExpiredCertifications` and `usp_GetDepartmentTrainingStats` are the batch/reporting procedures those two features depend on, so they came with the same ownership rather than splitting a workflow down the middle.
-
-**Why the static cursor is co-owned, not solely Parth's:** Workflow 2 (expired certification review) *is* a compliance workflow — expired certs get caught, queued, and routed to a Manager decision that only certain roles can execute. The queue-processing cursor sits inside that same workflow as the batch procedure and the permission gating on the review step, so keeping it in my lane kept Workflow 2's implementation together instead of handing one piece of it to someone else mid-flow.
-
-**Why `DENY` shows up everywhere instead of just omitting grants:** the business case explicitly calls for controlled visibility by role (Admin/Manager/Clerk/Employee), and "don't grant something" only holds if nothing *else* ever grants it — a fragile guarantee once four roles exist. `DENY` closes that permanently regardless of what else changes later, which is the stronger guarantee the "sensitive HR data" problem actually calls for.
-
-**Why filtered/covering indexes instead of indexing everything:** the named problem was slow *compliance reports*, not slow queries in general — so the fix should target the specific hot paths (pending enrollments, department compliance, expiry queue) rather than blanket-indexing a table that's mostly historical data by the time it's queried.
+- **Security + optimization landed with me** because those were the exact two problems named in our proposal: no access control, and slow reports.
+- **I took 3 procedures + the dynamic cursor** because dynamic SQL reporting and department-gap notifications are really "who sees what" problems — same lane as security.
+- **The static cursor is mine too** because it's part of the same expiry-review workflow as my batch procedure — kept that whole workflow in one place.
+- **I used `DENY` instead of just skipping grants** because `DENY` can't be overridden later if someone accidentally grants access another way — it's the safer lock.
+- **I used filtered/covering indexes instead of indexing everything** because only a few specific queries were actually slow — no need to index the whole table.
 
 ---
 
