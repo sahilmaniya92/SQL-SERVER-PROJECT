@@ -15,17 +15,9 @@ Presentation script — code snippet, then what it does and why, for each piece 
 
 ---
 
-## Why I Built What I Built
-
-- **Security + optimization landed with me** because those were the exact two problems named in our proposal: no access control, and slow reports.
-- **I took 3 procedures + the dynamic cursor** because dynamic SQL reporting and department-gap notifications are really "who sees what" problems — same lane as security.
-- **The static cursor is mine too** because it's part of the same expiry-review workflow as my batch procedure — kept that whole workflow in one place.
-- **I used `DENY` instead of just skipping grants** because `DENY` can't be overridden later if someone accidentally grants access another way — it's the safer lock.
-- **I used filtered/covering indexes instead of indexing everything** because only a few specific queries were actually slow — no need to index the whole table.
-
----
-
 ## 1. Security — roles, GRANT/REVOKE/DENY
+
+**Why mine:** this was one of the two problems named in our proposal — no access control on sensitive HR data.
 
 **Idempotent role setup** (`security/permissions.sql`):
 
@@ -50,6 +42,7 @@ DENY EXECUTE ON HRTrainingOps.usp_ProcessCertificationReview TO Training_Clerk;
 ```
 - `Training_Clerk` needs INSERT/UPDATE to do enrollment work, but `DENY` closes the two doors a broad grant would otherwise leave open — DELETE and the review procedure.
 - `DENY` beats any `GRANT` a principal might pick up from another role, so it's the safer tool here, not just "don't grant."
+- **Why `DENY` and not just skipping the grant:** `DENY` can't be overridden later if someone accidentally grants access another way — it's the safer lock.
 
 **Employee self-service — no base table access at all:**
 
@@ -94,6 +87,8 @@ END CATCH;
 ---
 
 ## 3. Indexing (`optimization/indexes.sql`)
+
+**Why mine:** this was the other problem named in our proposal — slow compliance reports. And filtered/covering indexes instead of indexing everything, because only a few specific queries were actually slow.
 
 **Filtered + INCLUDE index — the one I'll get asked about most:**
 
@@ -142,6 +137,8 @@ SET SHOWPLAN_TEXT OFF;
 ---
 
 ## 5. My stored procedures
+
+**Why mine:** dynamic SQL reporting and department-gap notifications are really "who sees what" problems — same lane as security, so I took these instead of splitting them across two people.
 
 ### `usp_RunComplianceReport` — the dynamic SQL requirement
 
@@ -194,6 +191,8 @@ GROUP BY d.DepartmentID, d.Name;
 ## 6. My cursors
 
 ### Static cursor — `usp_ProcessExpiryQueueWithCursor`
+
+**Why mine:** it's part of the same expiry-review workflow as my batch procedure — kept that whole workflow in one place instead of handing one piece to someone else.
 
 ```sql
 DECLARE expiry_cursor CURSOR STATIC LOCAL FOR
