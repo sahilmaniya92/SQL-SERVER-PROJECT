@@ -13,6 +13,17 @@ Presentation script — code snippet, then what it does and why, for each piece 
 | Cursors | `procedures/expired_certification_review_cursor.sql` (static), `procedures/usp_DynamicDepartmentNotification.sql` (dynamic) |
 | Optimization | `optimization/indexes.sql`, `optimization/index_performance_compare.sql`, `optimization/index_analysis_notes.md` |
 
+## My Part vs. the Problem Statement
+
+| Named business problem (from the proposal) | Closed by |
+|---|---|
+| No role-based access → sensitive HR data lacks controlled visibility | §1 Security — roles, GRANT/DENY |
+| No audit trail — review decisions and errors are not logged | §2 Test suite — proves every claim actually runs |
+| Poor query performance — compliance reports slow without proper indexing | §3 Indexing + §4 Performance proof |
+| HR cannot see enrollment and certification status | §5 `usp_RunComplianceReport` |
+| Certifications expire without timely action | §5 `usp_BatchUpdateExpiredCertifications` + §6 static cursor |
+| Departments missing mandatory training go unnoticed | §5 `usp_GetDepartmentTrainingStats` + §6 dynamic cursor |
+
 ---
 
 ## 1. Security — roles, GRANT/REVOKE/DENY
@@ -55,6 +66,8 @@ DENY SELECT ON HRTrainingOps.TrainingRequests TO Employee_Client;
 ---
 
 ## 2. Permission test suite (`security/test_cases.sql`)
+
+**Problem it solves:** "no audit trail" was one of the named business problems — this turns every security claim above from something asserted into something actually proven running, plus it logs the full workflow trail itself.
 
 **Proving a role can do what it should:**
 
@@ -116,6 +129,8 @@ Full inventory: clustered PK (Phase I) + this filtered index + this covering ind
 
 ## 4. Performance proof (`optimization/index_performance_compare.sql`)
 
+**Problem it solves:** proves the "slow compliance reports" problem is actually fixed — Scan → Seek on screen, not just claimed.
+
 ```sql
 SET STATISTICS IO ON;
 SET STATISTICS TIME ON;
@@ -142,6 +157,8 @@ SET SHOWPLAN_TEXT OFF;
 
 ### `usp_RunComplianceReport` — the dynamic SQL requirement
 
+**Problem it solves:** "HR cannot see enrollment and certification status" — this is the one flexible report that replaces having no visibility at all.
+
 ```sql
 IF @DepartmentName IS NOT NULL
     SET @where += N' AND d.Name = @pDepartmentName';
@@ -155,6 +172,8 @@ EXEC sys.sp_executesql
 - A `CASE` expression computes `ComplianceFlag` (`Compliant`/`In Progress`/`Non-Compliant`/`Review`) so the output is decision-ready, not just raw rows.
 
 ### `usp_BatchUpdateExpiredCertifications` — Workflow 2, step 1
+
+**Problem it solves:** "certifications expire without timely action" — this catches them automatically instead of relying on someone noticing manually.
 
 ```sql
 BEGIN TRANSACTION;
@@ -172,6 +191,8 @@ COMMIT TRANSACTION;
 - `SET XACT_ABORT ON` + `TRY/CATCH` with `ROLLBACK`: either both steps apply or neither does.
 
 ### `usp_GetDepartmentTrainingStats` — department reporting
+
+**Problem it solves:** "which departments are missing mandatory training" — one query surfaces a gap that was previously invisible.
 
 ```sql
 SELECT d.DepartmentID, d.Name AS DepartmentName,
@@ -194,6 +215,8 @@ GROUP BY d.DepartmentID, d.Name;
 
 **Why mine:** it's part of the same expiry-review workflow as my batch procedure — kept that whole workflow in one place instead of handing one piece to someone else.
 
+**Problem it solves:** same "certifications expire without timely action" gap — turns queued expired certs into an actual notification instead of a list nobody looks at.
+
 ```sql
 DECLARE expiry_cursor CURSOR STATIC LOCAL FOR
     SELECT q.QueueID, q.BusinessEmployeeID, q.CourseCode, q.ExpiryDate, q.DaysOverdue
@@ -214,6 +237,8 @@ END;
 - `CATCH` checks `CURSOR_STATUS` before close/deallocate, so cleanup never errors on a cursor that's already closed or never opened.
 
 ### Dynamic cursor — `usp_DynamicDepartmentNotification`
+
+**Problem it solves:** "which departments are missing mandatory training" — flags the gap proactively instead of waiting for an audit to find it.
 
 ```sql
 INSERT INTO #DeptGaps (DepartmentID, DepartmentName, MissingCount, SampleEmployeeID)
